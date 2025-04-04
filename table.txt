@@ -1,0 +1,47 @@
+-- 1. Создание таблицы "Типы материалов"
+CREATE TABLE MaterialTypes (
+    material_type_id SERIAL PRIMARY KEY,
+    material_type_name VARCHAR(100) UNIQUE NOT NULL,
+    defect_percentage DECIMAL(10, 4) NOT NULL
+);
+
+-- 2. Создание таблицы "Партнеры"
+CREATE TABLE Partners (
+    partner_id SERIAL PRIMARY KEY,
+    partner_type VARCHAR(50) NOT NULL,
+    partner_name VARCHAR(100) UNIQUE NOT NULL,
+    director VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    phone VARCHAR(20) NOT NULL,
+    legal_address VARCHAR(200) NOT NULL,
+    inn VARCHAR(12) UNIQUE NOT NULL,
+    rating INT NOT NULL
+);
+
+-- 3. Создание таблицы "Типы продукции"
+CREATE TABLE ProductTypes (
+    product_type_id SERIAL PRIMARY KEY,
+    product_type_name VARCHAR(100) UNIQUE NOT NULL,
+    type_coefficient DECIMAL(10, 2) NOT NULL
+);
+
+-- 4. Создание таблицы "Продукция"
+CREATE TABLE Products (
+    product_id SERIAL PRIMARY KEY,
+    product_type_id INT NOT NULL,
+    product_name VARCHAR(200) NOT NULL,
+    article VARCHAR(20) UNIQUE NOT NULL,
+    min_partner_price DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (product_type_id) REFERENCES ProductTypes(product_type_id)
+);
+
+-- 5. Создание таблицы "Продажи"
+CREATE TABLE Sales (
+    sale_id SERIAL PRIMARY KEY,
+    product_id INT NOT NULL,
+    partner_id INT NOT NULL,
+    quantity INT NOT NULL,
+    sale_date TIMESTAMP NOT NULL,
+    FOREIGN KEY (product_id) REFERENCES Products(product_id),
+    FOREIGN KEY (partner_id) REFERENCES Partners(partner_id)
+);
